@@ -22,12 +22,12 @@ describe("Backbone Factory", function () {
       var emailSequence = BackboneFactory.define_sequence('person_email', function (n) {
         return "person" + n + "@example.com";
       }),
-      postFactory = BackboneFactory.define('post', Post, function () {
+      postFactory = BackboneFactory.define('post', window.Models.Post, function () {
         return {
           author: BackboneFactory.create('user')
         };
       }),
-      userFactory = BackboneFactory.define('user', User, function () {
+      userFactory = BackboneFactory.define('user', window.Models.User, function () {
         return {
           name : 'Backbone User',
           email: BackboneFactory.next('person_email')
@@ -40,8 +40,8 @@ describe("Backbone Factory", function () {
     
 
     it("return an instance of the Backbone Object requested", function () {
-      expect(this.postObject instanceof Post).toBeTruthy();
-      expect(this.userObject instanceof User).toBeTruthy();
+      expect(this.postObject instanceof window.Models.Post).toBeTruthy();
+      expect(this.userObject instanceof window.Models.User).toBeTruthy();
     });
           
     // Not sure if this test is needed. But what the hell!
@@ -63,7 +63,7 @@ describe("Backbone Factory", function () {
     });
 
     it("should work if other factories are passed", function () {
-      expect(this.postObject.get('author') instanceof User).toBeTruthy(); 
+      expect(this.postObject.get('author') instanceof window.Models.User).toBeTruthy(); 
     })
 
     it("should override defaults if arguments are passed on creation", function () {
@@ -91,7 +91,7 @@ describe("Backbone Factory", function () {
 
       it("should throw an error if factory_name is not proper", function () {
         expect(function () {
-          BackboneFactory.define('wrong name', Post);
+          BackboneFactory.define('wrong name', window.Models.Post);
         }).toThrow("Factory name should not contain spaces or other funky characters");
       });
 
@@ -112,4 +112,3 @@ describe("Backbone Factory", function () {
   });
   
 });
-
