@@ -3,24 +3,24 @@ describe("Backbone Factory", function () {
   describe("Defining and using Sequences", function () {
 
     beforeEach(function() {
-      var emailSequence = BackboneFactory.define_sequence('email', function (n) {
-        return "person" + n + "@example.com";
+      var emailSequence = BackboneFactory.define_sequence('email', function (name) {
+        return name + "@example.com";
       });
     });
 
-    it("should increment the sequence on successive calls", function () {
-      expect(BackboneFactory.next('email')).toBe('person1@example.com');
-      expect(BackboneFactory.next('email')).toBe('person2@example.com');
+    it("should return the sequence on successive calls", function () {
+      expect(BackboneFactory.next('email', 'dude')).toBe('dude@example.com');
+      expect(BackboneFactory.next('email', 'dudette')).toBe('dudette@example.com');
     });
-
+ 
   });
 
   describe("Defining and using Factories", function () {
 
     beforeEach(function () {
 
-      var emailSequence = BackboneFactory.define_sequence('person_email', function (n) {
-        return "person" + n + "@example.com";
+      var emailSequence = BackboneFactory.define_sequence('person_email', function (name) {
+        return name + "@example.com";
       }),
       postFactory = BackboneFactory.define('post', window.Models.Post, function () {
         return {
@@ -54,12 +54,19 @@ describe("Backbone Factory", function () {
     });
 
     it("should work with sequences", function(){
-      var anotherUser;
+      var anotherUser,
+          personSequence = BackboneFactory.define_sequence('person', function (first_name, last_name) {
+            return first_name + ' ' + last_name;
+          }),
+          person;
 
-      expect(this.userObject.get('email')).toBe('person2@example.com');
+      expect(this.userObject.get('email')).toBe('2@example.com');
 
       anotherUser = BackboneFactory.create('user');
-      expect(anotherUser.get('email')).toBe('person3@example.com');
+      expect(anotherUser.get('email')).toBe('3@example.com');
+
+      person = BackboneFactory.next('person', 'Dudette', 'Dudetts');
+      expect(person).toBe('Dudette Dudetts');      
     });
 
     it("should work if other factories are passed", function () {
@@ -77,6 +84,7 @@ describe("Backbone Factory", function () {
     });
 
     it("should have an id", function () {
+      console.log(this.userObject)
       expect(this.userObject.id).toBeDefined();
     });
 
@@ -86,7 +94,7 @@ describe("Backbone Factory", function () {
 
       expect(secondID).toBe(firstID + 1);
     });
-    
+
     describe("Error Messages", function () {
 
       it("should throw an error if factory_name is not proper", function () {
