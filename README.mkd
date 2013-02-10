@@ -60,10 +60,10 @@ var emailSequence = BackboneFactory.define_sequence('email', function (n) {
 });
 ```
 
-## Or with Custom Callbacks
+Or with Custom Callbacks
 ```javascript
-var personSequence = BackboneFactory.define_sequence('person', function (first_name, last_name) {
-  return first_name + ' ' + last_name;
+var personSequence = BackboneFactory.define_sequence('person', function (firstName, lastName) {
+  return firstName + ' ' + lastName;
 });
 ```
 
