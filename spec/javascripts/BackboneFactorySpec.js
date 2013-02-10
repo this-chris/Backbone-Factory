@@ -55,8 +55,8 @@ describe("Backbone Factory", function () {
 
     it("should work with sequences", function(){
       var anotherUser,
-          personSequence = BackboneFactory.define_sequence('person', function (first_name, last_name) {
-            return first_name + ' ' + last_name;
+          personSequence = BackboneFactory.define_sequence('person', function (firstName, lastName) {
+            return firstName + ' ' + lastName;
           }),
           person;
 
