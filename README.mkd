@@ -60,10 +60,21 @@ var emailSequence = BackboneFactory.define_sequence('email', function (n) {
 });
 ```
 
+## Or with Custom Callbacks
+```javascript
+var personSequence = BackboneFactory.define_sequence('person', function (first_name, last_name) {
+  return first_name + ' ' + last_name;
+});
+```
+
+
 ### Using Sequences
 
 ```javascript
 var email = BackboneFactory.next('email') // person1@example.com
+```
+```javascript
+var person = BackboneFactory.next('person', 'Dudette', 'Dudetts') // Dudette Dudetts
 ```
 
 ### Defining Factories with defaults
