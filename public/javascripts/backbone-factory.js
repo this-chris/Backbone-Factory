@@ -8,6 +8,7 @@
     sequences: {},
 
     define: function(factory_name, klass, defaults){
+      var factory_name_id = "_"+ factory_name +"_id";
 
       // Check for arguments' sanity
       if(factory_name.match(/[^\w_]+/)){
@@ -19,13 +20,15 @@
       // The object creator
       this.factories[factory_name] = function(options){
         if(options === undefined) options = function(){return {}};
-        arguments =  _.extend({}, {id: BackboneFactory.next("_" + factory_name + "_id")}, defaults.call(), options.call());
+        arguments =  _.extend({}, {
+          id: BackboneFactory.next(factory_name_id)
+        }, defaults.call(), options.call());
         return new klass(arguments);
       };
 
       // Lets define a sequence for id
-      BackboneFactory.define_sequence("_"+ factory_name +"_id", function(n){
-        return n
+      BackboneFactory.define_sequence(factory_name_id, function(number){
+        return number;
       });
     },
 
@@ -43,11 +46,20 @@
     },
 
     next: function(sequence_name){
-      if(this.sequences[sequence_name] === undefined){
+      if(_.isUndefined(this.sequences[sequence_name])) {
         throw "Sequence with name " + sequence_name + " does not exist";
+      } else {
+        var args = _.toArray(arguments),
+            sequence_counter = this.sequences[sequence_name].counter;
+
+        if (_.size(args) > 1) {
+          args.splice(0, 1);
+        } else {
+          this.sequences[sequence_name].counter = sequence_counter + 1;
+          args = [this.sequences[sequence_name].counter];
+        }
+        return this.sequences[sequence_name]['callback'].apply(null, args); //= callback;
       }
-      this.sequences[sequence_name]['counter'] += 1;
-      return this.sequences[sequence_name]['callback'].apply(null, [this.sequences[sequence_name]['counter']]); //= callback; 
     }
   }
 })();
