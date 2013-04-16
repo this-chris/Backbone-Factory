@@ -85,12 +85,12 @@ describe("Backbone Factory", function () {
 
     it("should have an id", function () {
       console.log(this.userObject)
-      expect(this.userObject.id).toBeDefined();
+      expect(this.userObject.factory_id).toBeDefined();
     });
 
     it("should have an id that increments on creation", function () {
-      var firstID = BackboneFactory.create('user').id,
-          secondID = BackboneFactory.create('user').id;
+      var firstID = BackboneFactory.create('user').factory_id,
+          secondID = BackboneFactory.create('user').factory_id;
 
       expect(secondID).toBe(firstID + 1);
     });

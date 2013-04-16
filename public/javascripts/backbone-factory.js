@@ -21,7 +21,7 @@
       this.factories[factory_name] = function(options){
         if(options === undefined) options = function(){return {}};
         arguments =  _.extend({}, {
-          id: BackboneFactory.next(factory_name_id)
+          factory_id: BackboneFactory.next(factory_name_id)
         }, defaults.call(), options.call());
         return new klass(arguments);
       };
